@@ -1,0 +1,22 @@
+{
+  "name": "local-include-js",
+  "version": "1.0.0",
+  "description": "Allows to include(\"toto/tata\") local files from the project's root in nodejs, instead of require(\"../toto/tata\"). Aliases and multiple root folders are supported.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trouve-antoine/local-include-js.git"
+  },
+  "keywords": [
+    "include",
+    "require"
+  ],
+  "author": "Antoine Trouvé",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^3.5.0"
+  }
+}
