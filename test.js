@@ -4,7 +4,7 @@ const assert = chai.assert
 const local_include_js = require('.')
   .add('.')
   .alias('the-root', '.')
-  .alias('test-folder', './test')
+  .alias('@test-folder', './test')
   .warn(console.log)
   .debug(console.warn)
 
