@@ -4,7 +4,8 @@ const path_sep = require('path').sep
 
 const baseFolders = [ undefined /* tries the normal undefined at first */ ]
 const aliases = new Map()
-let warn = console.warn
+let warn = undefined
+let debug = undefined
 
 global.include = function(path) {
   path = resolveAlias(path)
@@ -14,6 +15,7 @@ global.include = function(path) {
     return require(path)
   }
 
+  debug && debug("All the base folders are: ", baseFolders)
   for(let i=0; i<baseFolders.length; i++) {
     const baseFolder = baseFolders[i]
     let resolved_path = path
@@ -38,7 +40,10 @@ function resolveAlias(path) {
   if(matchAlias) {
     const alias = matchAlias[1]
     const remainingPath = matchAlias[2]
-    if(!aliases.has(alias)) { throw new Error("Unable to find alias " + alias) }
+    if(!aliases.has(alias)) {
+      debug && debug("All the available aliaes are: ", aliases)
+      throw new Error("Unable to find alias " + alias)
+    }
     const resolvedAlias = aliases.get(alias)
     return resolvedAlias + remainingPath
   } else {
@@ -52,16 +57,25 @@ const addPath = (path) => {
   }
 
   baseFolders.push(path)
+
+  debug && debug("Added a path. Base folders are now ", baseFolders)
+
   return module.exports
 }
 
 const addAlias = (alias, path) => {
+  if(alias[0] === `@`) { alias = alias.substring(1) }
+
   aliases.set(alias, path)
+
+  debug && debug("Added an alias. All aliases are now ", baseFolders)
+
   return module.exports
 }
 
 module.exports = {
   add: addPath,
   alias: addAlias,
-  warn: f => { warn = f; return module.exports }
+  warn: f => { warn = f; return module.exports },
+  debug: f => { debug = f; return module.exports }
 }

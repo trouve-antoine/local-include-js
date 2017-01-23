@@ -6,6 +6,7 @@ const local_include_js = require('.')
   .alias('the-root', '.')
   .alias('test-folder', './test')
   .warn(console.log)
+  .debug(console.warn)
 
 describe('basic usage', function() {
   it('existing file', function() {
