@@ -12,21 +12,24 @@ global.include = function(path) {
   let lastError
 
   if(path[0] === path_sep) {
+    debug && debug('The path is absolute: does not look into the base folders (' + path +' )')
     return require(path)
   }
 
-  debug && debug("All the base folders are: ", baseFolders)
+  debug && debug("Searches into the base folders: ", baseFolders)
   for(let i=0; i<baseFolders.length; i++) {
     const baseFolder = baseFolders[i]
     let resolved_path = path
     if(baseFolder) { resolved_path = join_path(baseFolder, path) }
+
+    debug && debug("Look for " + resolved_path + " (the base folder was " + (baseFolder || 'the default location') + ")")
 
     try {
       return require(resolved_path)
     } catch(e) {
       if(e.code !== 'MODULE_NOT_FOUND') { throw e }
       lastError = e
-      // warn("Unable to find file " + resolved_path)
+      warn && warn("Unable to find file " + resolved_path)
     }
   }
 
@@ -41,7 +44,7 @@ function resolveAlias(path) {
     const alias = matchAlias[1]
     const remainingPath = matchAlias[2]
     if(!aliases.has(alias)) {
-      debug && debug("All the available aliaes are: ", aliases)
+      debug && debug("All the available aliases are: ", aliases)
       throw new Error("Unable to find alias " + alias)
     }
     const resolvedAlias = aliases.get(alias)
