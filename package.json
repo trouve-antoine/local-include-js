@@ -1,6 +1,6 @@
 {
   "name": "local-include-js",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Allows to include(\"toto/tata\") local files from the project's root in nodejs, instead of require(\"../toto/tata\"). Aliases and multiple root folders are supported.",
   "main": "index.js",
   "scripts": {

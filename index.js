@@ -72,8 +72,6 @@ const addPath = (path) => {
 }
 
 const addAlias = (alias, path) => {
-  if(alias[0] === `@`) { alias = alias.substring(1) }
-
   aliases.set(alias, path)
 
   debug && debug("Added an alias. All aliases are now ", baseFolders)
