@@ -22,18 +22,18 @@ describe('basic usage', function() {
   })
 
   it('existing file with alias', function() {
-    assert.doesNotThrow(() => include('@the-root/index.js'))
+    assert.doesNotThrow(() => include('the-root/index.js'))
   })
 
   it('wrong alias', function() {
-    assert.throws(() => include('@wtf/index.js'), Error, /^Unable to find alias/)
+    assert.throws(() => include('@wtf/index.js'), Error, /^Cannot find module/)
   })
 
   it('existing file in alias, with errors', function() {
-    assert.throws(() => include('@test-folder/file-with-error'), Error, "nothing is not defined")
+    assert.throws(() => include('test-folder/file-with-error'), Error, "nothing is not defined")
   })
 
   it('non-existing file in alias', function() {
-    assert.throws(() => include('@test-folder/wtf.toto'), Error, /^Cannot find module/)
+    assert.throws(() => include('test-folder/wtf.toto'), Error, /^Cannot find module/)
   })
 })

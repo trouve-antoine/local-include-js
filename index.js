@@ -39,19 +39,24 @@ global.include = function(path) {
 }
 
 function resolveAlias(path) {
-  const matchAlias = path.match(/^@([\w\-\.]+)(.*)$/)
-  if(matchAlias) {
-    const alias = matchAlias[1]
-    const remainingPath = matchAlias[2]
-    if(!aliases.has(alias)) {
-      debug && debug("All the available aliases are: ", aliases)
-      throw new Error("Unable to find alias " + alias)
-    }
-    const resolvedAlias = aliases.get(alias)
-    return resolvedAlias + remainingPath
+  const matchingAliases = [...aliases.keys()].filter(alias => path.indexOf(alias) === 0)
+
+  if(matchingAliases.length === 0) { return path }
+
+  let alias;
+
+  if(matchingAliases.length > 1) {
+    debug('More than one match for path: use the longest one')
+    alias = matchingAliases.sort()[matchingAliases.length-1]
   } else {
-    return path
+    alias = matchingAliases[0]
   }
+
+  const aliasValue = aliases.get(alias)
+
+  const solvedPath = aliasValue + path.substring(alias.length)
+
+  return solvedPath
 }
 
 const addPath = (path) => {

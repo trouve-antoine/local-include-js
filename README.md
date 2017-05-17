@@ -3,6 +3,8 @@
 Replaces `require` in ordee to allow to `include` files from any root folder in node.js.
 Also supports aliasing.
 
+Breaking change in version 2.0.0: aliases do not always start with '@' anymore.
+
 ## Usage
 
 Basic usage:
@@ -18,7 +20,7 @@ include('@some-alias/file-in-alias')
 ```
 
 - adds `../relative/folder` in the search path (relative to the current file)
-- adds `/absolute/folder` in the search path. Aliases are referred with a `@` prefix (e.g. `@some-alias`)
+- adds `/absolute/folder` in the search path
 - adds an alias  with name `some-alias` that points to `some/folder`
 
 Files can now be required using the function `include` (instead of `require`).
