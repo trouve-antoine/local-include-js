@@ -7,13 +7,16 @@ const aliases = new Map()
 let warn = undefined
 let debug = undefined
 
+const Module = require('module');
+const originalRequire = Module.prototype.require;
+
 global.include = function(path) {
   path = resolveAlias(path)
   let lastError
 
   if(path[0] === path_sep) {
     debug && debug('The path is absolute: does not look into the base folders (' + path +' )')
-    return require(path)
+    return originalRequire(path)
   }
 
   debug && debug("Searches into the base folders: ", baseFolders)
@@ -25,7 +28,7 @@ global.include = function(path) {
     debug && debug("Look for " + resolved_path + " (the base folder was " + (baseFolder || 'the default location') + ")")
 
     try {
-      return require(resolved_path)
+      return originalRequire(resolved_path)
     } catch(e) {
       if(e.code !== 'MODULE_NOT_FOUND') { throw e }
       lastError = e
@@ -79,9 +82,14 @@ const addAlias = (alias, path) => {
   return module.exports
 }
 
+const overrideRequire = () => {
+  Module.prototype.require = global.include
+}
+
 module.exports = {
   add: addPath,
   alias: addAlias,
+  overrideRequire,
   warn: f => { warn = f; return module.exports },
-  debug: f => { debug = f; return module.exports }
+  debug: f => { debug = f; return module.exports },
 }

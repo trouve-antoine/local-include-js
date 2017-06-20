@@ -35,6 +35,22 @@ For example `@some-alias/file-in-alias` is searched as follows:
 - the library calls `require('some/folder/file-in-alias')`
 - the library searches in `../relative/folder` and `/absolute/folder`
 
+## Override require
+
+It is possible to completely override the require function by calling the function `overrideRequire` like below:
+
+```
+require('local-include-js')
+  .add('../relative/folder')
+  .add('/absolute/folder')
+  .alias('some-alias', 'some/folder') // can also write '@some-alias'
+  .overrideRequire()
+
+require('file-in-path')
+require('@some-alias/file-in-alias')
+```
+
+
 ## Other facts
 
 When a file is not found, the thrown error is with respect to the last folder in the path.
