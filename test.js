@@ -30,10 +30,23 @@ describe('basic usage', function() {
   })
 
   it('existing file in alias, with errors', function() {
-    assert.throws(() => include('test-folder/file-with-error'), Error, "nothing is not defined")
+    assert.throws(() => include('test-folder/file-with-error'), Error, /^Cannot find module/)
   })
 
   it('non-existing file in alias', function() {
     assert.throws(() => include('test-folder/wtf.toto'), Error, /^Cannot find module/)
   })
+})
+
+describe('override require', function() {
+  local_include_js.overrideRequire()
+  
+  it('existing file', function() {
+    assert.doesNotThrow(() => require('index.js'))
+  })
+  
+  it('existing file with alias', function() {
+    assert.doesNotThrow(() => require('the-root/index.js'))
+  })
+  
 })
